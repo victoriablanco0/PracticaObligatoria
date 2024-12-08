@@ -1,5 +1,8 @@
 package model;
 
-public class ExporterFactory {
-
+public class ExporterFactory{
+    @Override
+    public static IExporter getExporter(String type){
+        
+    }
 }
