@@ -5,6 +5,7 @@ package controller;
 import java.util.List;
 import java.util.UUID;
 
+import model.ExporterException;
 import model.Model;
 import model.RepositoryException;
 import model.Task;
@@ -31,43 +32,34 @@ public class Controller {
         view.end();
     }
 
-   public boolean agregarTarea(Task tarea) throws RepositoryException{
-        return model.agregarTarea(tarea);
+   public boolean addTask(Task tarea) throws RepositoryException{
+        return model.addTask(tarea);
    }
 
-   public boolean eliminarTarea(UUID identifier){
-        return model.eliminarTarea(identifier);
+   public boolean removeTask(UUID identifier) throws RepositoryException{
+        return model.removeTask(identifier);
    }
 
-   public Task modificarTarea(UUID identifier) throws RepositoryException{
-        return model.modificarTarea(identifier);
+   public Task modifyTask(UUID identifier) throws RepositoryException{
+        return model.modifyTask(identifier);
    }
 
-   public boolean importarTareasCSV(){
-        return model.importarTareasCSV();
+   public boolean importarTareas() throws ExporterException, RepositoryException{
+        return model.importarTareas();
     }
 
-    public boolean exportarTareasCSV(){
-        return model.exportarTareasCSV();
+    public boolean exportarTareas() throws ExporterException{
+        return model.exportarTareas();
     }
 
-    public List<Task> obtenerTareasDelModelo() throws RepositoryException{
-        return model.obtenerTareas();
+    public List<Task> getAllTasks() throws RepositoryException{
+        return model.getAllTasks();
     }
 
     public boolean completarTarea(UUID identifierCompletar) {
         return model.completarTarea(identifierCompletar);
     }
 
-    public boolean exportarTareasJSON() {
-        return model.exportarTareasJSON();
-
-    }
-
-    public boolean importarTareasJSON() {
-        return model.importarTareasJSON();
-
-    }
-
+  
 
 }

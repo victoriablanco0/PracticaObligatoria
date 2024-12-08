@@ -77,22 +77,20 @@ public class Task implements Serializable {
 
     }
 
-
-
-
-
-
     public String tareaCompletada(){
         if(this.isCompleted()==true){
             return "SI";
         }else{return "NO";}
     }
 
-    public void changeCompleted(){
+    public void completarTarea(){
         if(this.completed==true){
             setCompleted(false);
         }else{setCompleted(true);}
     }
+
+
+
 
     //getters y setters
     public UUID getIdentifier() {

@@ -10,12 +10,14 @@ import java.util.UUID;
 
 public interface IRepository {
 
-    public Task addTask(Task t) throws RepositoryException;
+    public boolean addTask(Task t) throws RepositoryException;
 
-    public void removeTask(Task t) throws RepositoryException;
+    public boolean removeTask(UUID identifier) throws RepositoryException;
 
-    public void modifyTask(Task t) throws RepositoryException;
+    public Task modifyTask(UUID identifier) throws RepositoryException;
 
     public ArrayList<Task> getAllTasks() throws RepositoryException;
+
+    public boolean completarTarea(UUID identifier);
 
 }

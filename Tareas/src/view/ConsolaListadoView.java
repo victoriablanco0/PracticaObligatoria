@@ -16,7 +16,7 @@ public class ConsolaListadoView extends BaseView {
     
     @Override
     public void init() throws Exception{
-        mostrarMenu();
+        showMenu();
     }
     
     @Override
@@ -41,7 +41,7 @@ public class ConsolaListadoView extends BaseView {
 
 
     @Override
-    public void mostrarMenu() throws Exception {
+    public void showMenu() throws Exception {
         int opcion;
         do{
             System.out.println("\n--- MENU ---");
@@ -55,7 +55,7 @@ public class ConsolaListadoView extends BaseView {
 
             switch (opcion) {
                 case 1:
-                    agregarTarea();
+                    addTask();
                     break;
             
                 case 2:
@@ -80,7 +80,7 @@ public class ConsolaListadoView extends BaseView {
 
 
 
-    public void agregarTarea() throws RepositoryException{
+    public void addTask() throws RepositoryException{
         System.out.println("Introduzca los datos de la tarea: ");
         UUID identifier = UUID.randomUUID();
         String title = Esdia.readString("Introduzca el título de la tarea: ");
@@ -99,7 +99,7 @@ public class ConsolaListadoView extends BaseView {
         int estimatedDuration = Esdia.readInt("Introduzca la duración estimada: ");
         boolean completed = false;
 
-        if(controller.agregarTarea(new Task(identifier, title, date, content, priority, estimatedDuration, completed))){
+        if(controller.addTask(new Task(identifier, title, date, content, priority, estimatedDuration, completed))){
             System.out.println("Tarea agregada con éxito");
         } else{
             System.out.println("No se pudo agregar la tarea.");
@@ -116,7 +116,7 @@ public class ConsolaListadoView extends BaseView {
     }
 
     private void tareasSinCompletar() throws RepositoryException{
-        List<Task> tareas = controller.obtenerTareasDelModelo();
+        List<Task> tareas = controller.getAllTasks();
         List<Task> pendingTasks = new ArrayList<>();
             for(Task tarea : tareas){
             if(!tarea.isCompleted()){
@@ -138,7 +138,7 @@ public class ConsolaListadoView extends BaseView {
     }
 
     private void historialTareas() throws RepositoryException{
-        List<Task> tareas = controller.obtenerTareasDelModelo();
+        List<Task> tareas = controller.getAllTasks();
         
         if (tareas.isEmpty()) {
             System.out.println("No hay tareas registradas.");
@@ -155,7 +155,7 @@ public class ConsolaListadoView extends BaseView {
     public void detallesTarea() throws RepositoryException{
         String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a obtener los detalles y modificar: ");
         UUID identifierModificar = UUID.fromString(identifierString);
-        Task tareaModificar = controller.modificarTarea(identifierModificar);
+        Task tareaModificar = controller.modifyTask(identifierModificar);
         System.out.println(tareaModificar.listarTarea()); //damos los detalles de la tarea con el id introducido
 
         if(tareaModificar !=null){
@@ -202,7 +202,7 @@ public class ConsolaListadoView extends BaseView {
     private void modificarTarea() throws RepositoryException{
         String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a marcar como completada: ");
         UUID identifierModificar = UUID.fromString(identifierString);
-        Task tareaModificar = controller.modificarTarea(identifierModificar);
+        Task tareaModificar = controller.modifyTask(identifierModificar);
         if(tareaModificar != null){
             String newTitle=tareaModificar.getTitle();
             LocalDate newDate=tareaModificar.getDate();
@@ -221,7 +221,7 @@ public class ConsolaListadoView extends BaseView {
             newCompleted = Esdia.siOno("Introduzca si la tarea está completada o no: ");
             
             Task tareaModificada = new Task(identifierModificar, newTitle, newDate, newContent,newPriority, newEstimatedDuration, newCompleted);
-            controller.agregarTarea(tareaModificada);
+            controller.addTask(tareaModificar);
 
             System.out.println("La tarea con el identificador " + identifierModificar + "se ha marcado como completada.");
         } else{
@@ -229,10 +229,10 @@ public class ConsolaListadoView extends BaseView {
         }
     }
         
-    public void eliminarTarea(){
+    public void eliminarTarea() throws RepositoryException{
         String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a eliminar: ");
         UUID identifierEliminar = UUID.fromString(identifierString);
-        if(controller.eliminarTarea(identifierEliminar)){
+        if(controller.removeTask(identifierEliminar)){
             System.out.println("La tarea con el identificador " + identifierEliminar + "ha sido eliminada.");
         } else{
             System.out.println("La tarea con el identificador " + identifierEliminar + "no pudo ser eliminada.");
@@ -242,7 +242,7 @@ public class ConsolaListadoView extends BaseView {
 
     public void exportarImportar(){
         boolean salir = false;
-            do {
+            /*do {
                 System.out.println("MENÚ");
                 System.out.println("1.- Importar JSON");
                 System.out.println("2.- Importar CSV");
@@ -267,42 +267,14 @@ public class ConsolaListadoView extends BaseView {
                         salir = true;
                         break;
                     default:
-                        System.out.println("Opción no válida");
+                        System.out.println("Opción no válida"); 
                         break;
                 }
-            } while (!salir);
+            } while (!salir);*/
 
     }
 
-    public void importarJSON(){
-        if(controller.importarTareasJSON()){
-            System.out.println("Se ha importado en formato JSON");
-        }else{
-            System.out.println("No se pudo importar en formato JSON");
-        }
-    }
-
-    public void importarCSV(){
-        if(controller.importarTareas()){
-            System.out.println("Se ha importado en formato CSV");
-        }else{
-            System.out.println("No se pudo importar en formato CSV");
-        }
-    }
-    public void exportarJSON(){
-        if(controller.exportarTareasJSON()){
-            System.out.println("Se ha exportado en formato JSON");
-        }else{
-            System.out.println("No se pudo exportar en formato JSON");
-        }
-    }
-    public void exportarCSV(){
-        if(controller.exportarTareas()){
-            System.out.println("Se ha exportado en formato CSV");
-        }else{
-            System.out.println("No se pudo exportar en formato CSV");
-        }
-    }
+ 
         
 
 

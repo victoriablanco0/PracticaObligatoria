@@ -20,43 +20,44 @@ public class Model {
         this.exporter = exporter;
         tareas = new ArrayList<>();
     }
-
-    public void run(){
-        view.showMenu();
-    }
-
     
 
-    public Task agregarTarea(Task tarea) throws RepositoryException{
+    public boolean addTask(Task tarea) throws RepositoryException{
         return repository.addTask(tarea);
 
     }
 
-    public void eliminarTarea(UUID identifier){
+    public boolean removeTask(UUID identifier) throws RepositoryException{
         return repository.removeTask(identifier);
     }
 
-    public void modificarTarea(UUID identifier) throws RepositoryException{
+    public Task modifyTask(UUID identifier) throws RepositoryException{
         return repository.modifyTask(identifier);
     }
 
-    public boolean tareasCompletadas(UUID identifier){
-        return repository.tareasCompletadas(identifier);
-    }
-
-    public boolean exportarTareasCSV(){
-        return repository.exportarTareasCSV(tareas);
+    public boolean exportarTareas() throws ExporterException{
+        return exporter.exportarTareas(tareas);
     }
 
 
 
-    public boolean importarTareasCSV(){
-        return repository.importarTareasCSV();
+    public boolean importarTareas() throws ExporterException, RepositoryException{
+        
+
+       List<Task> tareasImportadas=exporter.importarTareas();
+        for(Task tarea:tareasImportadas){
+            repository.addTask(tarea);
+        }
+        boolean exito=true;
+        if(tareasImportadas==null){
+            exito=false;
+        }
+        return exito;
     }
 
 
-    public List<Task> obtenerTareas() throws RepositoryException{
-       return repository.obtenerTareas();
+    public List<Task> getAllTasks() throws RepositoryException{
+       return repository.getAllTasks();
        
        
         /* List<Task> listaCopia = new ArrayList<>(tareas.size());
