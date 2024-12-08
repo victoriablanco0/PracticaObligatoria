@@ -15,7 +15,7 @@ public class CSVExporter implements IExporter{
     
     
     @Override
-    public ArrayList<Task> importarTareasCSV() throws Exception {
+    public ArrayList<Task> importarTareas() {
         ArrayList<Task> tareas = new ArrayList<>();
         try {
             List<String> lineas = Files.readAllLines(ruta);
@@ -28,13 +28,13 @@ public class CSVExporter implements IExporter{
             }
             return tareas;
         } catch (IOException e) {
-            throw new Exception("No se pudo importar los alumnos. ",e);
+            return null;
         }
     }
 
 
     @Override
-    public boolean exportarTareasCSV(ArrayList<Task> tareas) throws Exception {
+    public boolean exportarTareas(ArrayList<Task> tareas) {
         Path rutaCSV = Paths.get(System.getProperty("user.home"),"Downloads","tareas.csv" );
 
         try(PrintWriter writer = new PrintWriter(rutaCSV.toFile())) {
@@ -46,9 +46,10 @@ public class CSVExporter implements IExporter{
             }
         return true;
     } catch (Exception e) {
-        throw new Exception("No se pudo exportar los alumnos. ");
+        return false;
     }
     }
+
     
 
     

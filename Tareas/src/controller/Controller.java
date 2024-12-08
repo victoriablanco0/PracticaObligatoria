@@ -24,7 +24,7 @@ public class Controller {
 
     public void run() throws Exception{
         //menú principal
-        view.mostrarMenu();
+        view.showMenu();
     }
 
     public void end(){

@@ -21,19 +21,23 @@ public class Model {
         tareas = new ArrayList<>();
     }
 
+    public void run(){
+        view.showMenu();
+    }
+
     
 
-    public boolean agregarTarea(Task tarea) throws RepositoryException{
-        return repository.agregarTarea(tarea);
+    public Task agregarTarea(Task tarea) throws RepositoryException{
+        return repository.addTask(tarea);
 
     }
 
-    public boolean eliminarTarea(UUID identifier){
-        return repository.eliminarTarea(identifier);
+    public void eliminarTarea(UUID identifier){
+        return repository.removeTask(identifier);
     }
 
-    public Task modificarTarea(UUID identifier) throws RepositoryException{
-        return repository.modificarTarea(identifier);
+    public void modificarTarea(UUID identifier) throws RepositoryException{
+        return repository.modifyTask(identifier);
     }
 
     public boolean tareasCompletadas(UUID identifier){

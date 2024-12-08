@@ -26,7 +26,7 @@ public class Task implements Serializable {
         this.content = content;
         this.priority = priority;
         this.estimatedDuration = estimatedDuration;
-        this.completed = completed;
+        this.completed = false; //para que por defecto la tarea no este completada
     }
 
     //constructor copia

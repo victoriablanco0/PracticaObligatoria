@@ -7,7 +7,7 @@ public abstract class BaseView {
 
     public abstract void init() throws Exception;
 
-    public abstract void mostrarMenu() throws Exception;
+    public abstract void showMenu() throws Exception;
 
     public abstract void showMessage(String mensaje);
 

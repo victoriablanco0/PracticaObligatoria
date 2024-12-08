@@ -19,7 +19,7 @@ Path ruta = Paths.get(System.getProperty("user.home"), "Downloads", "tareas.json
     
     
     @Override
-    public ArrayList<Task> importarTareasJSON() throws Exception {
+    public ArrayList<Task> importarTareas() {
         ArrayList<Task> tareas = new ArrayList<>();
         Gson gson = new Gson();
 
@@ -34,13 +34,13 @@ Path ruta = Paths.get(System.getProperty("user.home"), "Downloads", "tareas.json
             }
             return tareas;
         } catch (IOException e) {
-            throw new Exception("No se pudo importar JSON. ",e);
+            return null;
         }
     }
 
 
     @Override
-    public boolean exportarTareasJSON(ArrayList<Task> tareas) throws Exception {
+    public boolean exportarTareas(ArrayList<Task> tareas){
         // Crear un objeto Gson
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -53,10 +53,9 @@ Path ruta = Paths.get(System.getProperty("user.home"), "Downloads", "tareas.json
             }
         return true;
     } catch (IOException e) {
-        throw new Exception("No se pudo exportar el archivo json. ");
+        return false;
     }
     }
-
     
 }
 
