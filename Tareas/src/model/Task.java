@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -19,6 +20,8 @@ public class Task implements Serializable {
     private int priority;
     private int estimatedDuration;
     private boolean completed;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
     //constructor con atributos
     public Task(UUID identifier, String title, Date date, String content, int priority, int estimatedDuration,
@@ -54,7 +57,6 @@ public class Task implements Serializable {
             UUID identifier = UUID.fromString(datos[0]) ;
             String title = datos[1];
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            formatter.setLenient(false);
             Date date = formatter.parse(datos[2]);
             String content = datos[3];
             int priority = Integer.parseInt(datos[4]);

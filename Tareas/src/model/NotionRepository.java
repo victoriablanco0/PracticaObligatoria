@@ -37,7 +37,7 @@ public class NotionRepository implements IRepository{
 
 
     // Buscar el ID (interno de Notion) de una página por Identifier (atributo Title de la Database de Notion)
-    private String findPageIdByIdentifier(UUID identifier, String titleColumnName) {
+    private String findPageIdByIdentifier(String identifier, String titleColumnName) {
         try {
             QueryDatabaseRequest queryRequest = new QueryDatabaseRequest(databaseId);
             QueryResults queryResults = client.queryDatabase(queryRequest);
@@ -119,13 +119,15 @@ public class NotionRepository implements IRepository{
         // Las propiedades son las que se definen en la Dabase de Notion como columnas
         // Se ejemplifican varios tipos de propiedades como texto, número, fecha y casilla de verificación
 
-        String p = findPageIdByIdentifier(tarea.getIdentifier(), titleColumnName);
-        
-        if(p!=null){
+        String p = findPageIdByIdentifier(tarea.getIdentifierAsString(), titleColumnName);
+        System.out.println(tarea.listarTarea());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
         Map<String, PageProperty> properties = Map.of(
+            
                 "Identifier", createTitleProperty((tarea.getIdentifier()).toString()),
                 "Titulo", createRichTextProperty(tarea.getTitle()),
-                "Fecha", createDateProperty((tarea.getDate()).toString()),
+                "Fecha", createDateProperty(formatter.format(tarea.getDate())),
                 "Contenido", createRichTextProperty(tarea.getContent()),
                 "Prioridad", createNumberProperty(tarea.getPriority()),
                 "Duracion Estimada", createNumberProperty(tarea.getEstimatedDuration()),
@@ -145,15 +147,14 @@ public class NotionRepository implements IRepository{
         // Sin embargo es necesario para actualizar o eliminar registros
         System.out.println("Página creada con ID (interno Notion)" + response.getId());
         return true;
-        } else{return false;
-        }
-    }
-
+        } 
+    
+    
 
     @Override
     public boolean removeTask(UUID identifier) throws RepositoryException {
         try {
-            String pageId = findPageIdByIdentifier(identifier,titleColumnName);
+            String pageId = findPageIdByIdentifier(identifier.toString(),titleColumnName);
             if (pageId == null) {
                 System.out.println("No se encontró un registro con el Identifier: " + identifier);
                 return false;
@@ -171,35 +172,28 @@ public class NotionRepository implements IRepository{
 
     @Override
     public Task modifyTask(UUID identifier) throws RepositoryException {
+        Task tareaCambiar = new Task();
         try {
-            String pageId = findPageIdByIdentifier(identifier, titleColumnName);
+            String pageId = findPageIdByIdentifier(identifier.toString(), titleColumnName);
             if (pageId == null) {
                 System.out.println("No se encontró un registro con el Identifier: " + identifier);
     
             }
+            QueryDatabaseRequest queryRequest = new QueryDatabaseRequest(databaseId);
 
-            // Crear las propiedades actualizadas
-            Map<String, PageProperty> updatedProperties = Map.of(
+            // Ejecutar la consulta
+            QueryResults queryResults = client.queryDatabase(queryRequest);
 
-                /*Task tareaCambiar = null;
-                for(Task tareaYaIntroducida : tareas){
-                 if(tareaYaIntroducida.getIdentifier().equals(identifier)){
-                     tareaCambiar = tareaYaIntroducida;
-                 }     
-                 
-                } 
-                return tareaCambiar;
-                /* "Titulo", createRichTextProperty(tarea.getTitle()),
-                "Fecha", createDateProperty((tarea.getDate()).toString()),
-                "Contenido", createRichTextProperty(tarea.getContent()),
-                "Prioridad", createNumberProperty(tarea.getPriority()),
-                "Duracion Estimada", createNumberProperty(tarea.getEstimatedDuration()),
-                "Completada", createCheckboxProperty(tarea.isCompleted())*/
-            );
-
-            // Crear la solicitud de actualización
-            UpdatePageRequest updateRequest = new UpdatePageRequest(pageId, updatedProperties);
-            client.updatePage(updateRequest);
+            // Procesar los resultados
+            for (Page page : queryResults.getResults()) {
+                Map<String, PageProperty> properties = page.getProperties();
+                Task tarea = mapPageToTask(page.getId(), properties);
+                if (tarea != null && tarea.getIdentifier().equals(identifier)) {
+                    tareaCambiar = tarea;
+                    removeTask(tarea.getIdentifier());
+                }
+            }
+            
 
             System.out.println("Página actualizada con ID (interno Notion)" + pageId);
         } catch (Exception e) {
@@ -237,13 +231,20 @@ public class NotionRepository implements IRepository{
     public boolean completarTarea(UUID identifier)  {
         List<Task> tareas = getAllTasks();
                               
-        for(Task tareaYaIntroducida : tareas){
-            if(tareaYaIntroducida.getIdentifier().equals(identifier)){
-                tareaYaIntroducida.completarTarea();
-                return true;
+        // Crear la solicitud para consultar la base de datos
+        QueryDatabaseRequest queryRequest = new QueryDatabaseRequest(databaseId);
+
+        // Ejecutar la consulta
+        QueryResults queryResults = client.queryDatabase(queryRequest);
+
+        // Procesar los resultados
+        for (Page page : queryResults.getResults()) {
+            Map<String, PageProperty> properties = page.getProperties();
+            Task tarea = mapPageToTask(page.getId(), properties);
+            if (tarea != null &&tare) {
+                tareas.add(tarea);
             }
         }
-        return false;
     }
 
 }
