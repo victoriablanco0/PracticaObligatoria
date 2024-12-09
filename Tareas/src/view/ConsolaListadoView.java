@@ -100,14 +100,15 @@ public class ConsolaListadoView extends BaseView {
             System.out.println("No se pudo agregar la tarea.");
         }
     }
-}
+
 
     public LocalDate pedirFecha(){
         LocalDate date = null;
         boolean fechaCorrecta = false;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato de fecha esperado (por ejemplo, 2023-12-07)
         while (!fechaCorrecta) { // Continuar pidiendo hasta obtener una fecha válida
-            String entrada = Esdia.readString("Introduce una fecha en formato yyyy-MM-dd: ");
+            
+        String entrada = Esdia.readString("Introduce una fecha en formato yyyy-MM-dd: ");
 
             try {
                 date = LocalDate.parse(entrada, formatter);
@@ -115,8 +116,8 @@ public class ConsolaListadoView extends BaseView {
             } catch (DateTimeParseException e) {
                 System.out.println("Fecha inválida. Por favor, inténtalo de nuevo.");
             }
-            return date;
         }
+        return date;
 
     }
 
@@ -183,13 +184,13 @@ public class ConsolaListadoView extends BaseView {
                 int opcion = Esdia.readInt("Introduzca la opcion deseada: ");
                 switch (opcion) {
                     case 1:
-                        tareaCompletada();
+                        tareaCompletada(identifierModificar);
                         break;
                     case 2:
-                        modificarTarea();
+                        modificarTarea(identifierModificar);
                         break;
                     case 3:
-                        eliminarTarea();
+                        eliminarTarea(identifierModificar);
                         break;
                     case 4:
                         salir = true;
@@ -202,20 +203,17 @@ public class ConsolaListadoView extends BaseView {
         }
     }
 
-    private void tareaCompletada(){
-        String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a marcar como completada: ");
-        UUID identifierCompletar = UUID.fromString(identifierString);
-        if(controller.completarTarea(identifierCompletar)){
-            System.out.println("La tarea con el identificador " + identifierCompletar + "se ha marcado como completada.");
+    private void tareaCompletada(UUID identifierModificar){
+        if(controller.completarTarea(identifierModificar)){
+            System.out.println("La tarea con el identificador " + identifierModificar + "se ha marcado como completada.");
         } else{
             System.out.println("Tarea no encontrada");
-
+            
         }
+        
     }
 
-    private void modificarTarea() throws RepositoryException{
-        String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a marcar como completada: ");
-        UUID identifierModificar = UUID.fromString(identifierString);
+    private void modificarTarea(UUID identifierModificar) throws RepositoryException{
         Task tareaModificar = controller.modifyTask(identifierModificar);
         if(tareaModificar != null){
             String newTitle=tareaModificar.getTitle();
@@ -243,13 +241,11 @@ public class ConsolaListadoView extends BaseView {
         }
     }
         
-    public void eliminarTarea() throws RepositoryException{
-        String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a eliminar: ");
-        UUID identifierEliminar = UUID.fromString(identifierString);
-        if(controller.removeTask(identifierEliminar)){
-            System.out.println("La tarea con el identificador " + identifierEliminar + "ha sido eliminada.");
+    public void eliminarTarea(UUID identifierModificar) throws RepositoryException{
+        if(controller.removeTask(identifierModificar)){
+            System.out.println("La tarea con el identificador " + identifierModificar + "ha sido eliminada.");
         } else{
-            System.out.println("La tarea con el identificador " + identifierEliminar + "no pudo ser eliminada.");
+            System.out.println("La tarea con el identificador " + identifierModificar + "no pudo ser eliminada.");
 
         }
     }
@@ -297,5 +293,5 @@ public class ConsolaListadoView extends BaseView {
 
 
 
-    
+
 }
