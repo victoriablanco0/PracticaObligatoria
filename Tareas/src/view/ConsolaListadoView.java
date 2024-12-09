@@ -222,25 +222,26 @@ public class ConsolaListadoView extends BaseView {
     private void modificarTarea(UUID identifierModificar) throws RepositoryException, ParseException{
         Task tareaModificar = controller.modifyTask(identifierModificar);
         if(tareaModificar != null){
-            String newTitle=tareaModificar.getTitle();
+            /*String newTitle=tareaModificar.getTitle();
             Date newDate=tareaModificar.getDate();
             String newContent=tareaModificar.getContent();
             int newPriority=tareaModificar.getPriority();
             int newEstimatedDuration=tareaModificar.getEstimatedDuration();
-            boolean newCompleted=tareaModificar.isCompleted();
+            boolean newCompleted=tareaModificar.isCompleted();*/
 
-            newTitle = Esdia.readString("Introduzca el nuevo título de la tarea");
+            String newTitle = Esdia.readString("Introduzca el nuevo título de la tarea");
             String nuevaFecha = Esdia.readString("Introduce la nueva fecha en formato yyyy-MM-dd: ");
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 formatter.setLenient(false);
-            newDate = formatter.parse(nuevaFecha);
-            newContent = Esdia.readString("Introduzca el nuevo contenido de la tarea: ");
-            newPriority = Esdia.readInt("Introduzca la nueva prioridad: ");
-            newEstimatedDuration = Esdia.readInt("Introduzca la nueva duración estimada: ");
-            newCompleted = Esdia.siOno("Introduzca si la tarea está completada o no: ");
+            Date newDate = formatter.parse(nuevaFecha);
+            String newContent = Esdia.readString("Introduzca el nuevo contenido de la tarea: ");
+            int newPriority = Esdia.readInt("Introduzca la nueva prioridad: ");
+            int newEstimatedDuration = Esdia.readInt("Introduzca la nueva duración estimada: ");
+            boolean newCompleted = Esdia.siOno("Introduzca si la tarea está completada o no: ");
             
             Task tareaModificada = new Task(identifierModificar, newTitle, newDate, newContent,newPriority, newEstimatedDuration, newCompleted);
-            controller.addTask(tareaModificar);
+            controller.removeTask(identifierModificar);
+            controller.addTask(tareaModificada);
 
             System.out.println("La tarea con el identificador " + identifierModificar + "se ha marcado como completada.");
         } else{

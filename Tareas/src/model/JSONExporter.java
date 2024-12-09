@@ -19,7 +19,7 @@ Path ruta = Paths.get(System.getProperty("user.home"), "Downloads", "tareas.json
     
     
     @Override
-    public ArrayList<Task> importarTareas() {
+    public List<Task> importarTareas() {
         ArrayList<Task> tareas = new ArrayList<>();
         Gson gson = new Gson();
 
@@ -40,7 +40,7 @@ Path ruta = Paths.get(System.getProperty("user.home"), "Downloads", "tareas.json
 
 
     @Override
-    public boolean exportarTareas(ArrayList<Task> tareas){
+    public boolean exportarTareas(List<Task> tareas){
         // Crear un objeto Gson
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 

@@ -4,18 +4,29 @@ import model.CSVExporter;
 import model.IExporter;
 import model.IRepository;
 import model.Model;
+import model.NotionRepository;
 import view.BaseView;
 import view.ConsolaListadoView;
 
 public class App {
+
+
+    
     public static void main(String[] args) throws Exception {
-        IRepository repository = new BinaryRepository();
+        //IRepository repository = new BinaryRepository();
         BaseView view = new ConsolaListadoView();
         IExporter exporter = new CSVExporter();
+        
+        String apiToken = "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";
+        String databaseId = "157be7b75ff88056a150c994ff38d843";
+        NotionRepository repository = new NotionRepository(apiToken, databaseId);
 
         Model model = new Model(repository, exporter);
         Controller controller = new Controller(view, model);
         controller.run();
+
+
+
         
         
         /* 
