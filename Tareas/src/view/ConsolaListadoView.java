@@ -13,8 +13,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.sql.rowset.spi.SyncResolver;
+
 import com.coti.tools.Esdia;
 
+import model.ExporterException;
 import model.RepositoryException;
 import model.Task;
 
@@ -90,13 +93,13 @@ public class ConsolaListadoView extends BaseView {
         System.out.println("Introduzca los datos de la tarea: ");
         UUID identifier = UUID.randomUUID();
         String title = Esdia.readString("Introduzca el título de la tarea: ");
-        pedirFecha();
+        Date fecha = pedirFecha();
         String content = Esdia.readString("Introduzca el contenido de la tarea: ");
         int priority = Esdia.readInt("Introduzca la prioridad de la tarea: ");
         int estimatedDuration = Esdia.readInt("Introduzca la duración estimada: ");
         boolean completed = false;
 
-        if(controller.addTask(new Task(identifier, title, pedirFecha(), content, priority, estimatedDuration, completed))){
+        if(controller.addTask(new Task(identifier, title, fecha, content, priority, estimatedDuration, completed))){
             System.out.println("Tarea agregada con éxito");
         } else{
             System.out.println("No se pudo agregar la tarea.");
@@ -171,7 +174,7 @@ public class ConsolaListadoView extends BaseView {
     }
 
 
-    public void detallesTarea() throws RepositoryException{
+    public void detallesTarea() throws RepositoryException, ParseException{
         String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a obtener los detalles y modificar: ");
         UUID identifierModificar = UUID.fromString(identifierString);
         Task tareaModificar = controller.modifyTask(identifierModificar);
@@ -217,7 +220,7 @@ public class ConsolaListadoView extends BaseView {
         
     }
 
-    private void modificarTarea(UUID identifierModificar) throws RepositoryException{
+    private void modificarTarea(UUID identifierModificar) throws RepositoryException, ParseException{
         Task tareaModificar = controller.modifyTask(identifierModificar);
         if(tareaModificar != null){
             String newTitle=tareaModificar.getTitle();
@@ -255,9 +258,9 @@ public class ConsolaListadoView extends BaseView {
         }
     }
 
-    public void exportarImportar(){
+    public void exportarImportar() throws ExporterException, RepositoryException{
         boolean salir = false;
-            /*do {
+            do {
                 System.out.println("MENÚ");
                 System.out.println("1.- Importar JSON");
                 System.out.println("2.- Importar CSV");
@@ -267,13 +270,13 @@ public class ConsolaListadoView extends BaseView {
                 int opcion = Esdia.readInt("Introduzca la opcion deseada: ");
                 switch (opcion) {
                     case 1:
-                        importarJSON();
+                        //importarJSON();
                         break;
                     case 2:
                         importarCSV();
                         break;
                     case 3:
-                        exportarJSON();
+                        //exportarJSON();
                         break;
                     case 4:
                         exportarCSV();
@@ -285,12 +288,31 @@ public class ConsolaListadoView extends BaseView {
                         System.out.println("Opción no válida"); 
                         break;
                 }
-            } while (!salir);*/
+            } while (!salir);
 
+
+            
+            
     }
 
  
-        
+    public void exportarCSV() throws ExporterException, RepositoryException {
+        if(controller.exportarTareas()){
+            System.out.println("Exportacion csv realizada con exito:");
+        } else{
+            System.out.println("No se pudo exoportar csv.");
+        }
+    }
+
+    public void importarCSV() throws ExporterException, RepositoryException{
+        if(controller.importarTareas()){
+            System.out.println("Importación CSV realizada con éxito");
+        }else{
+            System.out.println("No se pudo importar csv ");
+        }
+    }
+
+
 
 
     

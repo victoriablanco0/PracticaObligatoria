@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class CSVExporter implements IExporter{
     
     
     @Override
-    public ArrayList<Task> importarTareas() {
+    public ArrayList<Task> importarTareas() throws ExporterException  {
         ArrayList<Task> tareas = new ArrayList<>();
         try {
             List<String> lineas = Files.readAllLines(ruta);
@@ -27,7 +28,7 @@ public class CSVExporter implements IExporter{
 
             }
             return tareas;
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             return null;
         }
     }
@@ -41,8 +42,6 @@ public class CSVExporter implements IExporter{
             for(Task tarea: tareas){
                 String tareaString = tarea.getInstanceAsDelimitedString(";");
                 writer.println(tareaString);
-                System.out.println(tareaString);
-
             }
         return true;
     } catch (Exception e) {

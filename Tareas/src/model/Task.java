@@ -72,14 +72,22 @@ public class Task implements Serializable {
     }
 
     public String getInstanceAsDelimitedString(String delim){
-        identifier = getIdentifier();
-        String identifierString = identifier.toString();
-        return String.format(Locale.ENGLISH, "%s" + delim + "%s" + delim + "%s" + delim + "%s" + delim + "%s" + delim + "%s" + delim + "%s", identifierString, title, date, content, priority, estimatedDuration, tareaCompletada());
+        
+        return String.format("%s" + delim + "%s" + delim + "%s" + delim + "%s" + delim + "%d" + delim + "%d" + delim + "%s", getIdentifierAsString(), title, getDateAsString(), content, priority, estimatedDuration, tareaCompletada());
+    }
+
+    public String getIdentifierAsString(){
+        return this.identifier.toString();
+    }
+    public String getDateAsString(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(getDate());
+        return dateString;
     }
 
     public String listarTarea(){
 
-        return String.format("|%10ID|%10TITULO|%10FECHA|%10CONTENIDO|%10PRIORIDAD|%10DURACION|%10COMPLETADA|\n|%10s|%10s|%10s|%10s|%10d|%10d|%10s|", this.identifier, this.title, this.date, this.content, this.priority, this.estimatedDuration, tareaCompletada() );
+        return String.format("|%10s|%10s|%10s|%10s|%10s|%10s|%10s|\n|%10s|%10s|%10s|%10s|%10d|%10d|%10s|", "ID", "TITULO", "FECHA", "CONTENIDO", "PRIORIDAD", "DURACIÓN", "TAREA", this.identifier, this.title, this.date, this.content, this.priority, this.estimatedDuration, tareaCompletada() );
 
     }
 
@@ -124,7 +132,7 @@ public class Task implements Serializable {
     }
 
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

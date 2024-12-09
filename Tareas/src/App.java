@@ -12,55 +12,45 @@ public class App {
         IRepository repository = new BinaryRepository();
         BaseView view = new ConsolaListadoView();
         IExporter exporter = new CSVExporter();
+
         Model model = new Model(repository, exporter);
         Controller controller = new Controller(view, model);
         controller.run();
+        
+        
+        /* 
 
-                
-//        if(args.length == 2){
-//            view = getViewForoption(args[0]);
-//            repository = getRepositoryForOption(args[1]);
-//            
-//        }else{
-//            // Opciones por defecto:
-//            view = new ConsolaListadoView();
-//            repository = new MemoryRepository(20);
-//        }
-//        
-//        Model model = new Model(repository);
-//        Controller controller = new Controller(view, model);
-//        
-//        controller.inicio();  
-//    }
-//
-//    private static IExporter getExporterForOption(String argumento) {
-//        switch (argumento) {
-//            case "csv":
-//                return new CSVExporter();
-//            default:
-//                return new MemoryRepository(20);
-//        }
-//    }
-//
-//    private static IExporter getRepositoryForOption(String argumento) {
-//        switch (argumento) {
-//            case "csv":
-//                return new CSVExporter();
-//            default:
-//                return new MemoryRepository(20);
-//        }
-//    }
-//
-//    private static BaseView getViewForoption(String argumento) {
-//        switch (argumento) {
-//            case "CLIView":
-//                return new CLIView();
-//            case "submenus":
-//                return new ConsolaSubMenusView();
-//            default:
-//                return new ConsolaListadoView();
-//        }
-//    }
+            IRepository repository;
+            BaseView view = new ConsolaListadoView();
+            IExporter exporter;
 
-    }
+           if(args.length == 2){
+            repository = getRepositoryForOption(args[0]);
+            exporter = getExporterForOption(args[1]);
+            
+        }else{
+            // Opciones por defecto:
+            exporter = new CSVExporter();
+           repository = new BinaryRepository();
+       }
+       
+       Model model = new Model(repository, exporter);
+       Controller controller = new Controller(view, model);
+       
+       controller.run();  
+   }
+
+   private static IExporter getExporterForOption(String argumento) {
+       .getExporter(argumento);
+   }
+
+   private static IExporter getRepositoryForOption(String argumento) {
+       switch (argumento) {
+           case "csv":
+               return new CSVExporter();
+           default:
+               return new MemoryRepository(20);*/
+       }
+   
+    
 }

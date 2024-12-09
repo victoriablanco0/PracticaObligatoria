@@ -35,9 +35,9 @@ public class BinaryRepository implements IRepository{
             if(t.getIdentifier().equals(identifier)){
                 removeTask(identifier);
                 
-            }else{return false;}
+            } else{return false;}
         }return true;
-    } 
+    }
     
         
         
