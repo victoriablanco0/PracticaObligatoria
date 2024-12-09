@@ -4,21 +4,24 @@ package model;
 
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.*;
+import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
 public class Task implements Serializable {
     private UUID identifier;
     private String title;
-    private LocalDate date;
+    private Date date;
     private String content;
     private int priority;
     private int estimatedDuration;
     private boolean completed;
 
     //constructor con atributos
-    public Task(UUID identifier, String title, LocalDate date, String content, int priority, int estimatedDuration,
+    public Task(UUID identifier, String title, Date date, String content, int priority, int estimatedDuration,
             boolean completed) {
         this.identifier = UUID.randomUUID();
         this.title = title;
@@ -43,7 +46,7 @@ public class Task implements Serializable {
     public Task(){}
 
 
-    public static Task getTaskFromString(String tareaString, String delimitador){
+    public static Task getTaskFromString(String tareaString, String delimitador) throws ParseException{
         String[] datos = tareaString.split(delimitador);
         if(datos.length !=7){
             return null;
@@ -54,7 +57,9 @@ public class Task implements Serializable {
             String identifierString = identifier.toString();
             identifierString = datos[0];
             String title = datos[1];
-            LocalDate date = LocalDate.parse(datos[2]);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            formatter.setLenient(false);
+            Date date = formatter.parse(datos[2]);
             String content = datos[3];
             int priority = Integer.parseInt(datos[4]);
             int estimatedDuration = Integer.parseInt(datos[5]);
@@ -73,7 +78,8 @@ public class Task implements Serializable {
     }
 
     public String listarTarea(){
-        return String.format("|%10s|%10s|%10s|%10s|%10d|%10d|%10s|", this.identifier, this.title, this.date, this.content, this.priority, this.estimatedDuration, tareaCompletada() );
+
+        return String.format("|%10ID|%10TITULO|%10FECHA|%10CONTENIDO|%10PRIORIDAD|%10DURACION|%10COMPLETADA|\n|%10s|%10s|%10s|%10s|%10d|%10d|%10s|", this.identifier, this.title, this.date, this.content, this.priority, this.estimatedDuration, tareaCompletada() );
 
     }
 
@@ -113,7 +119,7 @@ public class Task implements Serializable {
     }
 
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 

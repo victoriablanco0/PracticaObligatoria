@@ -1,5 +1,7 @@
 package view;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -83,11 +86,10 @@ public class ConsolaListadoView extends BaseView {
 
 
 
-    public void addTask() throws RepositoryException{
+    public void addTask() throws RepositoryException, ParseException{
         System.out.println("Introduzca los datos de la tarea: ");
         UUID identifier = UUID.randomUUID();
         String title = Esdia.readString("Introduzca el título de la tarea: ");
-        
         pedirFecha();
         String content = Esdia.readString("Introduzca el contenido de la tarea: ");
         int priority = Esdia.readInt("Introduzca la prioridad de la tarea: ");
@@ -102,18 +104,20 @@ public class ConsolaListadoView extends BaseView {
     }
 
 
-    public LocalDate pedirFecha(){
-        LocalDate date = null;
+    public Date pedirFecha() throws ParseException{
+        Date date = null;
         boolean fechaCorrecta = false;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato de fecha esperado (por ejemplo, 2023-12-07)
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        formatter.setLenient(false);
         while (!fechaCorrecta) { // Continuar pidiendo hasta obtener una fecha válida
             
         String entrada = Esdia.readString("Introduce una fecha en formato yyyy-MM-dd: ");
 
             try {
-                date = LocalDate.parse(entrada, formatter);
+                date = formatter.parse(entrada);
                 fechaCorrecta = true;
-            } catch (DateTimeParseException e) {
+            } catch (ParseException e) {
                 System.out.println("Fecha inválida. Por favor, inténtalo de nuevo.");
             }
         }
@@ -217,16 +221,17 @@ public class ConsolaListadoView extends BaseView {
         Task tareaModificar = controller.modifyTask(identifierModificar);
         if(tareaModificar != null){
             String newTitle=tareaModificar.getTitle();
-            LocalDate newDate=tareaModificar.getDate();
+            Date newDate=tareaModificar.getDate();
             String newContent=tareaModificar.getContent();
             int newPriority=tareaModificar.getPriority();
             int newEstimatedDuration=tareaModificar.getEstimatedDuration();
             boolean newCompleted=tareaModificar.isCompleted();
 
             newTitle = Esdia.readString("Introduzca el nuevo título de la tarea");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String nuevaFecha = Esdia.readString("Introduce la nueva fecha en formato yyyy-MM-dd: ");
-            newDate = LocalDate.parse(nuevaFecha, formatter);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                formatter.setLenient(false);
+            newDate = formatter.parse(nuevaFecha);
             newContent = Esdia.readString("Introduzca el nuevo contenido de la tarea: ");
             newPriority = Esdia.readInt("Introduzca la nueva prioridad: ");
             newEstimatedDuration = Esdia.readInt("Introduzca la nueva duración estimada: ");
