@@ -48,7 +48,7 @@ public class Controller {
         return model.importarTareas();
     }
 
-    public boolean exportarTareas() throws ExporterException{
+    public boolean exportarTareas() throws ExporterException, RepositoryException{
         return model.exportarTareas();
     }
 

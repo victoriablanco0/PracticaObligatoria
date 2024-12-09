@@ -35,8 +35,8 @@ public class Model {
         return repository.modifyTask(identifier);
     }
 
-    public boolean exportarTareas() throws ExporterException{
-        return exporter.exportarTareas(tareas);
+    public boolean exportarTareas() throws ExporterException, RepositoryException{
+        return exporter.exportarTareas(getAllTasks());
     }
 
 
@@ -56,7 +56,7 @@ public class Model {
     }
 
 
-    public ArrayList<Task> getAllTasks() throws RepositoryException{
+    public List<Task> getAllTasks() throws RepositoryException{
        return repository.getAllTasks();
        
        

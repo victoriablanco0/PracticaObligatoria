@@ -1,7 +1,7 @@
 package model;
 
 public class ExporterFactory{
-     public static IExporter getExporter(String type){
+    /* public static IExporter getExporter(String type){
         switch (type) {
             case "csv":
                 return new CSVExporter();                
@@ -12,5 +12,5 @@ public class ExporterFactory{
                 return new CSVExporter();
         }
      }
-     
+     */
 }

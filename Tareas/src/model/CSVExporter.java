@@ -11,12 +11,12 @@ import java.util.List;
 
 public class CSVExporter implements IExporter{
 
-    Path ruta = Paths.get(System.getProperty("user.home"), "Downloads", "tasks.csv");
+    Path ruta = Paths.get(System.getProperty("user.home"), "Downloads", "tareas.csv");
     String delimitador = ";";
     
     
     @Override
-    public ArrayList<Task> importarTareas() throws ExporterException  {
+    public List<Task> importarTareas() throws ExporterException  {
         ArrayList<Task> tareas = new ArrayList<>();
         try {
             List<String> lineas = Files.readAllLines(ruta);
@@ -35,13 +35,15 @@ public class CSVExporter implements IExporter{
 
 
     @Override
-    public boolean exportarTareas(ArrayList<Task> tareas) {
-        Path rutaCSV = Paths.get(System.getProperty("user.home"),"Downloads","tareas.csv" );
-
+    public boolean exportarTareas(List<Task> tareas) {
+        Path rutaCSV = Paths.get(System.getProperty("user.home"),"Downloads", "tareas.csv" );
+        
         try(PrintWriter writer = new PrintWriter(rutaCSV.toFile())) {
+            
             for(Task tarea: tareas){
                 String tareaString = tarea.getInstanceAsDelimitedString(";");
                 writer.println(tareaString);
+                System.out.println(tareaString);
             }
         return true;
     } catch (Exception e) {

@@ -52,10 +52,9 @@ public class Task implements Serializable {
             return null;
         }
         
-        try {
-            UUID identifier = UUID.randomUUID();
-            String identifierString = identifier.toString();
-            identifierString = datos[0];
+        try { 
+            
+            UUID identifier = UUID.fromString(datos[0]) ;
             String title = datos[1];
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             formatter.setLenient(false);
@@ -71,9 +70,13 @@ public class Task implements Serializable {
         }
     }
 
-    public String getInstanceAsDelimitedString(String delim){
-        
-        return String.format("%s" + delim + "%s" + delim + "%s" + delim + "%s" + delim + "%d" + delim + "%d" + delim + "%s", getIdentifierAsString(), title, getDateAsString(), content, priority, estimatedDuration, tareaCompletada());
+    public String getInstanceAsDelimitedString(String delimitador){
+
+        String fields = "%s"+delimitador+"%s"+delimitador+"%s"+delimitador+"%s"+delimitador+"%d"+delimitador+"%d"+delimitador+"%s"+delimitador;
+                                                        
+        return String.format(fields,getIdentifierAsString(),title,getDateAsString(),content,priority,estimatedDuration,tareaCompletada());
+
+        //return String.format("%s" + delim + "%s" + delim + "%s" + delim + "%s" + delim + "%d" + delim + "%d" + delim + "%s", getIdentifierAsString(), title, getDateAsString(), content, priority, estimatedDuration, tareaCompletada());
     }
 
     public String getIdentifierAsString(){
