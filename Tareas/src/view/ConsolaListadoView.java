@@ -57,7 +57,7 @@ public class ConsolaListadoView extends BaseView {
             System.out.println("1. Agregar Tarea: ");
             System.out.println("2. Listar Tarea por orden de prioridad y el historial de tareas: ");
             System.out.println("3. Modificar Tarea: ");
-            System.out.println("4. Exportar Tarea: ");
+            System.out.println("4. Exportar o Importar Tareas: ");
             System.out.println("5. Salir ");
             opcion = Esdia.readInt("Ingrese una opción: ");
 

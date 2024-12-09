@@ -47,13 +47,10 @@ public class Task implements Serializable {
 
 
     public static Task getTaskFromString(String tareaString, String delimitador) throws ParseException{
-        String[] datos = tareaString.split(delimitador);
-        if(datos.length !=7){
-            return null;
-        }
-        
-        try { 
-            
+    
+            try { 
+                String[] datos = tareaString.split(delimitador);
+            if(datos.length ==7){
             UUID identifier = UUID.fromString(datos[0]) ;
             String title = datos[1];
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -62,13 +59,20 @@ public class Task implements Serializable {
             String content = datos[3];
             int priority = Integer.parseInt(datos[4]);
             int estimatedDuration = Integer.parseInt(datos[5]);
-            boolean completed = Boolean.parseBoolean(datos[7]);
+            boolean completed = Boolean.parseBoolean(datos[6]);
             Task t = new Task(identifier, title, date, content, priority, estimatedDuration, completed);
             return t;
+        }else{
+            return null;
+        }
+
         } catch (NumberFormatException|ArrayIndexOutOfBoundsException e) {
             return null;
         }
-    }
+        }
+        
+        
+    
 
     public String getInstanceAsDelimitedString(String delimitador){
 
