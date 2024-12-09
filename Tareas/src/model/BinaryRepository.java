@@ -12,14 +12,13 @@ public class BinaryRepository implements IRepository{
     
     @Override
     public boolean addTask(Task t) throws RepositoryException {
-        boolean existe = true;
-        for(Task tareaYaIntroducida : tareas){
-            if(tareaYaIntroducida.getIdentifier() != t.getIdentifier()){
-                tareas.add(t);
-            }else{existe = false;
-            }
+    
+        if(tareas.contains(t)){
+            return false;
+        } else{
+            tareas.add(t);
+            return true;
         }
-        return existe; 
         
     }
 
@@ -31,16 +30,16 @@ public class BinaryRepository implements IRepository{
     
     @Override
     public boolean removeTask(UUID identifier) throws RepositoryException {
-        boolean existe = true;
-            for(Task tareaYaIntroducida : tareas){
-                if(tareaYaIntroducida.getIdentifier()== identifier){
-                    tareas.remove(tareaYaIntroducida);
-                    existe = true;
+       
+        for(Task t : tareas){
+            if(t.getIdentifier().equals(identifier)){
+                removeTask(identifier);
                 
-                }
-            }
-            return existe; 
-        }
+            }else{return false;}
+        }return true;
+    } 
+    
+        
         
     
 

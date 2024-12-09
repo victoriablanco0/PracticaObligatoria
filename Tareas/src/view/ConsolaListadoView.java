@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -84,28 +87,38 @@ public class ConsolaListadoView extends BaseView {
         System.out.println("Introduzca los datos de la tarea: ");
         UUID identifier = UUID.randomUUID();
         String title = Esdia.readString("Introduzca el título de la tarea: ");
-        LocalDate date = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato de fecha esperado (por ejemplo, 2023-12-07)
-        while (date == null) { // Continuar pidiendo hasta obtener una fecha válida
-            String entrada = Esdia.readString("Introduce una fecha en formato yyyy-MM-dd: ");
-
-            try {
-                date = LocalDate.parse(entrada, formatter);
-            } catch (DateTimeParseException e) {
-                System.out.println("Fecha inválida. Por favor, inténtalo de nuevo.");
-            }
+        
+        pedirFecha();
         String content = Esdia.readString("Introduzca el contenido de la tarea: ");
         int priority = Esdia.readInt("Introduzca la prioridad de la tarea: ");
         int estimatedDuration = Esdia.readInt("Introduzca la duración estimada: ");
         boolean completed = false;
 
-        if(controller.addTask(new Task(identifier, title, date, content, priority, estimatedDuration, completed))){
+        if(controller.addTask(new Task(identifier, title, pedirFecha(), content, priority, estimatedDuration, completed))){
             System.out.println("Tarea agregada con éxito");
         } else{
             System.out.println("No se pudo agregar la tarea.");
         }
     }
 }
+
+    public LocalDate pedirFecha(){
+        LocalDate date = null;
+        boolean fechaCorrecta = false;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Formato de fecha esperado (por ejemplo, 2023-12-07)
+        while (!fechaCorrecta) { // Continuar pidiendo hasta obtener una fecha válida
+            String entrada = Esdia.readString("Introduce una fecha en formato yyyy-MM-dd: ");
+
+            try {
+                date = LocalDate.parse(entrada, formatter);
+                fechaCorrecta = true;
+            } catch (DateTimeParseException e) {
+                System.out.println("Fecha inválida. Por favor, inténtalo de nuevo.");
+            }
+            return date;
+        }
+
+    }
 
     public void listarTareas() throws RepositoryException{
         System.out.println("TAREAS SIN COMPLETAR POR ORDEN DE PRIORIDAD: ");
@@ -119,18 +132,19 @@ public class ConsolaListadoView extends BaseView {
         List<Task> tareas = controller.getAllTasks();
         List<Task> pendingTasks = new ArrayList<>();
             for(Task tarea : tareas){
-            if(!tarea.isCompleted()){
+            if(tarea.isCompleted()==false){
                 pendingTasks.add(tarea);
             }
+            pendingTasks.sort(Comparator.comparing(Task::getPriority));
+            Collections.reverse(pendingTasks);
 
-        pendingTasks.sort((t1, t2) -> Integer.compare(t2.getPriority(), t1.getPriority()));
-        if (pendingTasks.isEmpty()) {
-            System.out.println("No hay tareas pendientes.");
-        } else {
-            for (Task task : pendingTasks) {
-                System.out.println(task);
+            if(pendingTasks.isEmpty()){
+                System.out.println("No hay tareas pendientes.");
+            }else{
+            for(Task t : pendingTasks){
+                System.out.println(t.listarTarea());
             }
-        }
+            }
 
         }
         
@@ -144,10 +158,10 @@ public class ConsolaListadoView extends BaseView {
             System.out.println("No hay tareas registradas.");
         } else {
             for(Task tarea : tareas){
-            System.out.println("|----------------------------------------------------------------------------|");
-            System.out.println(tarea.listarTarea());
-                }   
+                System.out.println(tarea.listarTarea());
             }
+            }
+         
         
     }
 

@@ -56,7 +56,7 @@ public class Model {
     }
 
 
-    public List<Task> getAllTasks() throws RepositoryException{
+    public ArrayList<Task> getAllTasks() throws RepositoryException{
        return repository.getAllTasks();
        
        

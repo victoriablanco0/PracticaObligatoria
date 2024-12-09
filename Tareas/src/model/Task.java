@@ -73,7 +73,7 @@ public class Task implements Serializable {
     }
 
     public String listarTarea(){
-        return String.format("|%10d|%10s|%10s|%10s|%10d|%10d|%10s|", this.identifier, this.title, this.date, this.content, this.priority, this.estimatedDuration, tareaCompletada() );
+        return String.format("|%10s|%10s|%10s|%10s|%10d|%10d|%10s|", this.identifier, this.title, this.date, this.content, this.priority, this.estimatedDuration, tareaCompletada() );
 
     }
 
