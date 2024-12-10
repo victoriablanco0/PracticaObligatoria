@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Date;
 
 import notion.api.v1.NotionClient;
 import notion.api.v1.http.OkHttp5Client;
@@ -19,12 +20,13 @@ import notion.api.v1.model.pages.PageProperty.RichText.Text;
 import notion.api.v1.request.databases.QueryDatabaseRequest;
 import notion.api.v1.request.pages.CreatePageRequest;
 import notion.api.v1.request.pages.UpdatePageRequest;
-import okhttp3.internal.concurrent.TaskLoggerKt;
 
 public class NotionRepository implements IRepository{
     private final NotionClient client;
     private final String databaseId;
     private final String titleColumnName = "Identifier";
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
 
     public NotionRepository(String apiToken, String databaseId){
         this.client=new NotionClient(apiToken);
@@ -97,6 +99,8 @@ public class NotionRepository implements IRepository{
         try {
             Task tarea = new Task(); 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            //DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+
 
             tarea.setIdentifier(UUID.fromString(properties.get("Identifier").getTitle().get(0).getText().getContent()));
             tarea.setTitle(properties.get("Titulo").getRichText().get(0).getText().getContent());
@@ -199,7 +203,7 @@ public class NotionRepository implements IRepository{
         } catch (Exception e) {
             e.printStackTrace();
         }
-                return null;
+                return tareaCambiar;
     }
 
     @Override
@@ -241,10 +245,12 @@ public class NotionRepository implements IRepository{
         for (Page page : queryResults.getResults()) {
             Map<String, PageProperty> properties = page.getProperties();
             Task tarea = mapPageToTask(page.getId(), properties);
-            if (tarea != null &&tare) {
-                tareas.add(tarea);
-            }
+            if (tarea != null &&tarea.getIdentifier().equals(identifier)) {
+                completarTarea(tarea.getIdentifier());
+                return true;
+            }else{return false;}
         }
+        return true;
     }
 
 }

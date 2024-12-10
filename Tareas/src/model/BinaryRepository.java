@@ -1,10 +1,10 @@
 package model;
 
 import java.io.File;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 public class BinaryRepository implements IRepository{
 
     private ArrayList<Task> tareas = new ArrayList<>();
@@ -12,7 +12,7 @@ public class BinaryRepository implements IRepository{
     
     @Override
     public boolean addTask(Task t) throws RepositoryException {
-    
+
         if(tareas.contains(t)){
             return false;
         } else{

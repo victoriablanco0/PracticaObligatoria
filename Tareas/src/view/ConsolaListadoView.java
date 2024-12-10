@@ -2,27 +2,20 @@ package view;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import javax.sql.rowset.spi.SyncResolver;
-
 import com.coti.tools.Esdia;
-
 import model.ExporterException;
 import model.RepositoryException;
 import model.Task;
 
 public class ConsolaListadoView extends BaseView {
-    
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
     @Override
     public void init() throws Exception{
         showMenu();
@@ -270,13 +263,13 @@ public class ConsolaListadoView extends BaseView {
                 int opcion = Esdia.readInt("Introduzca la opcion deseada: ");
                 switch (opcion) {
                     case 1:
-                        //importarJSON();
+                        importarJSON();
                         break;
                     case 2:
                         importarCSV();
                         break;
                     case 3:
-                        //exportarJSON();
+                        exportarJSON();
                         break;
                     case 4:
                         exportarCSV();
@@ -309,6 +302,22 @@ public class ConsolaListadoView extends BaseView {
             System.out.println("Importación CSV realizada con éxito");
         }else{
             System.out.println("No se pudo importar csv ");
+        }
+    }
+
+    public void exportarJSON() throws ExporterException, RepositoryException {
+        if(controller.exportarTareas()){
+            System.out.println("Exportacion json realizada con exito:");
+        } else{
+            System.out.println("No se pudo exoportar json.");
+        }
+    }
+
+    public void importarJSON() throws ExporterException, RepositoryException{
+        if(controller.importarTareas()){
+            System.out.println("Importación CSV realizada con json");
+        }else{
+            System.out.println("No se pudo importar json ");
         }
     }
 
