@@ -36,7 +36,7 @@ public class ConsolaListadoView extends BaseView {
 
     @Override
     public void end(){
-        System.out.println("SALIR DEL PROGRAMA");
+        System.out.println("Saliendo de la aplicacion");
 
     }
 
@@ -315,7 +315,7 @@ public class ConsolaListadoView extends BaseView {
 
     public void importarJSON() throws ExporterException, RepositoryException{
         if(controller.importarTareas()){
-            System.out.println("Importación CSV realizada con json");
+            System.out.println("Importación json realizada con exito");
         }else{
             System.out.println("No se pudo importar json ");
         }

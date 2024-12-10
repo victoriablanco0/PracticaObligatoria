@@ -1,9 +1,11 @@
+
+
 import controller.Controller;
 import model.BinaryRepository;
 import model.CSVExporter;
-import model.IRepository;
+import model.ExporterFactory;
 import model.IExporter;
-import model.JSONExporter;
+import model.IRepository;
 import model.Model;
 import model.NotionRepository;
 import view.BaseView;
@@ -15,57 +17,55 @@ public class App {
 
     
     public static void main(String[] args) throws Exception {
-        IRepository repository = new BinaryRepository();
+        IRepository repository;
         BaseView view = new ConsolaListadoView();
-        IExporter exporter = new JSONExporter();
+        IExporter exporter;
         
-        //IExporter exporter = new CSVExporter();
         
         //String apiToken = "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";
         //String databaseId = "157be7b75ff88056a150c994ff38d843";
         //NotionRepository repository = new NotionRepository(apiToken, databaseId);
 
-        Model model = new Model(repository, exporter);
-        Controller controller = new Controller(view, model);
-        controller.run();
-
-
-
-        
-        
-        /* 
-
-            IRepository repository;
-            BaseView view = new ConsolaListadoView();
-            IExporter exporter;
-
-           if(args.length == 2){
+        if(args.length == 2){
             repository = getRepositoryForOption(args[0]);
             exporter = getExporterForOption(args[1]);
             
         }else{
             // Opciones por defecto:
+            System.out.println("No se proporcionaron argumentos válidos. Usando valores por defecto.");
+
+            repository = new BinaryRepository();
             exporter = new CSVExporter();
-           repository = new BinaryRepository();
+
        }
-       
+
+        // Inicialización del modelo y controlador
+
        Model model = new Model(repository, exporter);
        Controller controller = new Controller(view, model);
        
+       //Ejecutar el controlador
        controller.run();  
    }
 
    private static IExporter getExporterForOption(String argumento) {
-       .getExporter(argumento);
+        return ExporterFactory.getExporter(argumento);
    }
 
-   private static IExporter getRepositoryForOption(String argumento) {
-       switch (argumento) {
-           case "csv":
-               return new CSVExporter();
-           default:
-               return new MemoryRepository(20);*/
-       }
-   
+   private static IRepository getRepositoryForOption(String argumento) {
+        switch (argumento.toLowerCase()) {
+            case "binary":
+                return new BinaryRepository();
+        
+            case "notion":
+                String apiToken = "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";
+                String databaseId = "157be7b75ff88056a150c994ff38d843";
+                return new NotionRepository(apiToken, databaseId);
+
+            default:
+            System.out.println("Opción de repositorio no reconocida. Usando BinaryRepository por defecto.");
+            return new BinaryRepository();
+        }
     
+    }
 }

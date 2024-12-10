@@ -24,8 +24,24 @@ public class Controller {
     }
 
     public void run() throws Exception{
+        //Carga inicial del programa
+        if(model.cargarEstadoAplicación()){
+            view.showMessage("Cargado estado anterior con exito");
+        }else{
+            view.showMessage("No se encontró fichero para carga del programa");
+        }
+
         //menú principal
         view.showMenu();
+
+
+        // Guardado final del programa
+        if(model.guardarEstadoAplicación()){
+            view.end();
+        }else{
+            view.showMessage("No se pudo guardar el estado de la aplicación.\nSaliendo...");
+        }
+
     }
 
     public void end(){

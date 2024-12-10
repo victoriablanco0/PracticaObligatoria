@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CSVExporter implements IExporter{
 
-    Path ruta = Paths.get(System.getProperty("user.home"), "Downloads", "tareas.csv");
+    Path ruta = Paths.get(System.getProperty("user.home"), "Downloads", "output.csv");
     String delimitador = ";";
     
     
@@ -36,7 +36,7 @@ public class CSVExporter implements IExporter{
 
     @Override
     public boolean exportarTareas(List<Task> tareas) {
-        Path rutaCSV = Paths.get(System.getProperty("user.home"),"Downloads", "tareas.csv" );
+        Path rutaCSV = Paths.get(System.getProperty("user.home"),"Downloads", "output.csv" );
         
         try(PrintWriter writer = new PrintWriter(rutaCSV.toFile())) {
             

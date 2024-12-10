@@ -25,7 +25,7 @@ public class NotionRepository implements IRepository{
     private final NotionClient client;
     private final String databaseId;
     private final String titleColumnName = "Identifier";
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        //DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
 
     public NotionRepository(String apiToken, String databaseId){
@@ -176,7 +176,7 @@ public class NotionRepository implements IRepository{
 
     @Override
     public Task modifyTask(UUID identifier) throws RepositoryException {
-        Task tareaCambiar = new Task();
+        Task tareaCambiar=null;
         try {
             String pageId = findPageIdByIdentifier(identifier.toString(), titleColumnName);
             if (pageId == null) {
@@ -193,17 +193,19 @@ public class NotionRepository implements IRepository{
                 Map<String, PageProperty> properties = page.getProperties();
                 Task tarea = mapPageToTask(page.getId(), properties);
                 if (tarea != null && tarea.getIdentifier().equals(identifier)) {
+                    tareaCambiar = new Task(identifier, tarea.getTitle(), tarea.getDate(), tarea.getContent(), tarea.getPriority(),tarea.getEstimatedDuration(),tarea.isCompleted());
+
                     tareaCambiar = tarea;
                     removeTask(tarea.getIdentifier());
                 }
             }
             
-
+            
             System.out.println("Página actualizada con ID (interno Notion)" + pageId);
         } catch (Exception e) {
             e.printStackTrace();
         }
-                return tareaCambiar;
+                return tareaCambiar;               
     }
 
     @Override
