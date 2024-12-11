@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+//CLASE PARA EXPORTAR/IMPORTAR EN CSV
 
 public class JSONExporter implements IExporter{
 

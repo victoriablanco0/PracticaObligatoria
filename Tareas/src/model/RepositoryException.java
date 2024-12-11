@@ -1,5 +1,8 @@
 package model;
 
+
+//Clase para el manejode la excepción personalizada RepositoryException
+
 public class RepositoryException extends Exception{
     public RepositoryException(){};
     public RepositoryException(Throwable cause){

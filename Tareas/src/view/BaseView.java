@@ -2,6 +2,9 @@ package view;
 
 import controller.Controller;
 
+
+//Clase Vista
+
 public abstract class BaseView {
     protected Controller controller;
 

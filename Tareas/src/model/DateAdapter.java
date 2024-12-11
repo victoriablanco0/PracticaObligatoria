@@ -9,6 +9,9 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+
+//Método adaptador para que el Gson pueda manejar el tipo de dato Date
+
 public class DateAdapter extends TypeAdapter<Date>  {
 private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

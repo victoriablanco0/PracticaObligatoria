@@ -21,13 +21,15 @@ import notion.api.v1.request.databases.QueryDatabaseRequest;
 import notion.api.v1.request.pages.CreatePageRequest;
 import notion.api.v1.request.pages.UpdatePageRequest;
 
+
+
+//REPOSITORIO PARA IMPLEMENTAR LA FUNCIONALIDAD DE NOTION
 public class NotionRepository implements IRepository{
     private final NotionClient client;
     private final String databaseId;
     private final String titleColumnName = "Identifier";
         //DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-
-
+    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     public NotionRepository(String apiToken, String databaseId){
         this.client=new NotionClient(apiToken);
         client.setHttpClient(new OkHttp5Client(60000,60000,60000));
@@ -235,24 +237,42 @@ public class NotionRepository implements IRepository{
 
     @Override
     public boolean completarTarea(UUID identifier)  {
-        List<Task> tareas = getAllTasks();
-                              
-        // Crear la solicitud para consultar la base de datos
-        QueryDatabaseRequest queryRequest = new QueryDatabaseRequest(databaseId);
-
-        // Ejecutar la consulta
-        QueryResults queryResults = client.queryDatabase(queryRequest);
-
-        // Procesar los resultados
-        for (Page page : queryResults.getResults()) {
-            Map<String, PageProperty> properties = page.getProperties();
-            Task tarea = mapPageToTask(page.getId(), properties);
-            if (tarea != null &&tarea.getIdentifier().equals(identifier)) {
-                completarTarea(tarea.getIdentifier());
-                return true;
-            }else{return false;}
-        }
-        return true;
+            boolean existe=false;
+            try {
+                // Crear la solicitud para consultar la base de datos
+                QueryDatabaseRequest queryRequest = new QueryDatabaseRequest(databaseId);
+    
+                // Ejecutar la consulta
+                QueryResults queryResults = client.queryDatabase(queryRequest);
+    
+                // Procesar los resultados
+                for (Page page : queryResults.getResults()) {
+                    Map<String, PageProperty> properties = page.getProperties();
+                    Task tarea = mapPageToTask(page.getId(), properties);
+                    if (tarea!=null&&tarea.getIdentifier().equals(identifier)) {
+                        String pageId = findPageIdByIdentifier(tarea.getIdentifier().toString(), titleColumnName);
+                        existe=true;
+                        tarea.completarTarea();
+                        Map<String, PageProperty> updatedProperties = Map.of(
+                        "Title", createRichTextProperty(tarea.getTitle()),
+                        "Date", createDateProperty(formatter.format(tarea.getDate())),
+                        "Content", createRichTextProperty(tarea.getContent()),
+                        "Priority", createNumberProperty(tarea.getPriority()),
+                        "EstimatedDuration", createNumberProperty(tarea.getEstimatedDuration()),
+                        "Completed", createCheckboxProperty(tarea.isCompleted())
+                        );
+                        // Crear la solicitud de actualización
+                        UpdatePageRequest updateRequest = new UpdatePageRequest(pageId, updatedProperties);
+                        client.updatePage(updateRequest);
+                
+    
+                
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return existe;}
     }
 
-}
+

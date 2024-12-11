@@ -13,6 +13,8 @@ import model.ExporterException;
 import model.RepositoryException;
 import model.Task;
 
+//Vista en la que se desarrollan todos los métodos necesarios para la ejecución de la aplicación
+
 public class ConsolaListadoView extends BaseView {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -49,7 +51,7 @@ public class ConsolaListadoView extends BaseView {
             System.out.println("\n--- MENU ---");
             System.out.println("1. Agregar Tarea: ");
             System.out.println("2. Listar Tarea por orden de prioridad y el historial de tareas: ");
-            System.out.println("3. Modificar Tarea: ");
+            System.out.println("3. holaModificar Tarea: ");
             System.out.println("4. Exportar o Importar Tareas: ");
             System.out.println("5. Salir ");
             opcion = Esdia.readInt("Ingrese una opción: ");
@@ -66,6 +68,7 @@ public class ConsolaListadoView extends BaseView {
                 case 3: 
                     detallesTarea();
                     break;
+
                 case 4:
                     exportarImportar();
                     break;
@@ -167,29 +170,26 @@ public class ConsolaListadoView extends BaseView {
 
 
     public void detallesTarea() throws RepositoryException, ParseException{
-        String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a obtener los detalles y modificar: ");
-        UUID identifierModificar = UUID.fromString(identifierString);
-        Task tareaModificar = controller.modifyTask(identifierModificar);
-        System.out.println(tareaModificar.listarTarea()); //damos los detalles de la tarea con el id introducido
+        
+        boolean salir = false;
+                 
 
-        if(tareaModificar !=null){
-            boolean salir = false;
             System.out.println("MENÚ");
             System.out.println("1.- Marcar la tarea como completada.");
             System.out.println("2.- Modificar la tarea seleccionada.");
             System.out.println("3.- Eliminar la tarea seleccionada.");
             System.out.println("4.- Salir");
-            do {
+            
                 int opcion = Esdia.readInt("Introduzca la opcion deseada: ");
                 switch (opcion) {
                     case 1:
-                        tareaCompletada(identifierModificar);
+                        tareaCompletada();
                         break;
                     case 2:
-                        modificarTarea(identifierModificar);
+                        modificarTarea();
                         break;
                     case 3:
-                        eliminarTarea(identifierModificar);
+                        eliminarTarea();
                         break;
                     case 4:
                         salir = true;
@@ -198,11 +198,14 @@ public class ConsolaListadoView extends BaseView {
                         System.out.println("Opción no válida");
                         break;
                 }
-            } while (!salir);
-        }
+            
+            
+    
     }
 
-    private void tareaCompletada(UUID identifierModificar){
+    private void tareaCompletada(){
+        String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a completar: ");
+        UUID identifierModificar = UUID.fromString(identifierString);
         if(controller.completarTarea(identifierModificar)){
             System.out.println("La tarea con el identificador " + identifierModificar + "se ha marcado como completada.");
         } else{
@@ -212,7 +215,9 @@ public class ConsolaListadoView extends BaseView {
         
     }
 
-    private void modificarTarea(UUID identifierModificar) throws RepositoryException, ParseException{
+    private void modificarTarea() throws RepositoryException, ParseException{
+        String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a obtener los detalles y modificar: ");
+        UUID identifierModificar = UUID.fromString(identifierString);
         Task tareaModificar = controller.modifyTask(identifierModificar);
         if(tareaModificar != null){
             /*String newTitle=tareaModificar.getTitle();
@@ -222,11 +227,10 @@ public class ConsolaListadoView extends BaseView {
             int newEstimatedDuration=tareaModificar.getEstimatedDuration();
             boolean newCompleted=tareaModificar.isCompleted();*/
 
-            String newTitle = Esdia.readString("Introduzca el nuevo título de la tarea");
-            String nuevaFecha = Esdia.readString("Introduce la nueva fecha en formato yyyy-MM-dd: ");
+            String newTitle = Esdia.readString("Introduzca el nuevo título de la tarea: ");
+            Date newDate = pedirFecha(); 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 formatter.setLenient(false);
-            Date newDate = formatter.parse(nuevaFecha);
             String newContent = Esdia.readString("Introduzca el nuevo contenido de la tarea: ");
             int newPriority = Esdia.readInt("Introduzca la nueva prioridad: ");
             int newEstimatedDuration = Esdia.readInt("Introduzca la nueva duración estimada: ");
@@ -236,13 +240,15 @@ public class ConsolaListadoView extends BaseView {
             controller.removeTask(identifierModificar);
             controller.addTask(tareaModificada);
 
-            System.out.println("La tarea con el identificador " + identifierModificar + "se ha marcado como completada.");
+            System.out.println("La tarea con el identificador " + identifierModificar + "se ha modificado.");
         } else{
             System.out.println("Tarea no encontrada");
         }
     }
         
-    public void eliminarTarea(UUID identifierModificar) throws RepositoryException{
+    public void eliminarTarea() throws RepositoryException{
+        String identifierString = Esdia.readString("Introduzca el identificador de la tarea que vamos a eliminar: ");
+        UUID identifierModificar = UUID.fromString(identifierString);
         if(controller.removeTask(identifierModificar)){
             System.out.println("La tarea con el identificador " + identifierModificar + "ha sido eliminada.");
         } else{

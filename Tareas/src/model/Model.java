@@ -19,7 +19,7 @@ public class Model {
 
 
 
-    //constructor
+    //Método Constructor
     public Model(IRepository repository, IExporter exporter){
         this.repository = repository;
         this.exporter = exporter;
@@ -67,12 +67,6 @@ public class Model {
        return repository.getAllTasks();
        
        
-        /* List<Task> listaCopia = new ArrayList<>(tareas.size());
-        for(Task tarea : tareas){
-            listaCopia.add(new Task(tarea));
-        }
-
-        return listaCopia;*/
     }
 
 
@@ -82,6 +76,7 @@ public class Model {
     }
 
 
+    
     public boolean cargarEstadoAplicación() {
 
         if (ficheroEstadoSerializado!=null && ficheroEstadoSerializado.isFile()) {

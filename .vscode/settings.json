@@ -2,7 +2,6 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "c:\\Users\\vicky\\Downloads\\biblioteca11.jar",
-        "c:\\Users\\vicky\\Downloads\\biblioteca11 (1).jar",
         "c:\\Users\\vicky\\Downloads\\gson-2.10.1.jar",
         "c:\\Users\\vicky\\Downloads\\notion-sdk-jvm-core-1.11.1.jar"
     ]

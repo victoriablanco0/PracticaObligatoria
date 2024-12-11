@@ -1,14 +1,13 @@
 package model;
-
-//CREO QUE COMPLETO
-
-
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.UUID;
+
+
+//Clase Tarea con atributos, constructores, getters y setters...
 
 public class Task implements Serializable {
     private UUID identifier;
@@ -19,7 +18,7 @@ public class Task implements Serializable {
     private int estimatedDuration;
     private boolean completed;
 
-    //DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+    DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 
     //constructor con atributos
     public Task(UUID identifier, String title, Date date, String content, int priority, int estimatedDuration,
@@ -80,7 +79,6 @@ public class Task implements Serializable {
                                                         
         return String.format(fields,getIdentifierAsString(),title,getDateAsString(),content,priority,estimatedDuration,tareaCompletada());
 
-        //return String.format("%s" + delim + "%s" + delim + "%s" + delim + "%s" + delim + "%d" + delim + "%d" + delim + "%s", getIdentifierAsString(), title, getDateAsString(), content, priority, estimatedDuration, tareaCompletada());
     }
 
     public String getIdentifierAsString(){
@@ -95,7 +93,7 @@ public class Task implements Serializable {
 
     public String listarTarea(){
 
-        return String.format("|%10s|%10s|%10s|%10s|%10s|%10s|%10s|\n|%10s|%10s|%10s|%10s|%10d|%10d|%10s|", "ID", "TITULO", "FECHA", "CONTENIDO", "PRIORIDAD", "DURACIÓN", "TAREA", this.identifier, this.title, this.date, this.content, this.priority, this.estimatedDuration, tareaCompletada() );
+        return String.format("|%10s|%10s|%10s|%10s|%10d|%10d|%10s|", this.identifier, this.title, this.date, this.content, this.priority, this.estimatedDuration, tareaCompletada() );
 
     }
 

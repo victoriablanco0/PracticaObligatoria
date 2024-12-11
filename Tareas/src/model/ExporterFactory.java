@@ -1,5 +1,8 @@
 package model;
 
+
+//Clase para selccionar el tipo de exportador 
+
 public class ExporterFactory{
     public static IExporter getExporter(String type){
         switch (type) {

@@ -9,10 +9,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//CLASE PARA EXPORTAR/IMPORTAR EN CSV
+
 public class CSVExporter implements IExporter{
 
     Path ruta = Paths.get(System.getProperty("user.home"), "Downloads", "output.csv");
-    String delimitador = ";";
+    String delimitador = ";"; //Comma Separated Value
     
     
     @Override
@@ -36,6 +39,9 @@ public class CSVExporter implements IExporter{
 
     @Override
     public boolean exportarTareas(List<Task> tareas) {
+        
+        //El archivo se guardará en la carpeta Descargas
+
         Path rutaCSV = Paths.get(System.getProperty("user.home"),"Downloads", "output.csv" );
         
         try(PrintWriter writer = new PrintWriter(rutaCSV.toFile())) {
@@ -43,7 +49,6 @@ public class CSVExporter implements IExporter{
             for(Task tarea: tareas){
                 String tareaString = tarea.getInstanceAsDelimitedString(";");
                 writer.println(tareaString);
-                System.out.println(tareaString);
             }
         return true;
     } catch (Exception e) {

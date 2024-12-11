@@ -1,7 +1,8 @@
 package model;
 import java.util.List;
 
-//COMPLETO
+
+//Interfaz para exportar/importar tareas; o bien en CSV o bien en JSON
 
 public interface IExporter {
 

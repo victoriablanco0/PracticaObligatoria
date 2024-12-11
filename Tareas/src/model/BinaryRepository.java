@@ -9,7 +9,8 @@ public class BinaryRepository implements IRepository{
 
     private ArrayList<Task> tareas = new ArrayList<>();
     
-    
+    //Tenemos que añadir todos los métodos que están en el IRepository
+
     @Override
     public boolean addTask(Task t) throws RepositoryException {
 
@@ -30,13 +31,17 @@ public class BinaryRepository implements IRepository{
     
     @Override
     public boolean removeTask(UUID identifier) throws RepositoryException {
-       
+        int posicion = -1;
         for(Task t : tareas){
             if(t.getIdentifier().equals(identifier)){
-                removeTask(identifier);
-                
-            } else{return false;}
-        }return true;
+                posicion= tareas.indexOf(t);
+                return true;
+            }       
+
+        }if(posicion>-1){
+            tareas.remove(posicion);
+        }
+                return false;
     }
     
         
@@ -59,7 +64,7 @@ public class BinaryRepository implements IRepository{
 
     @Override
     public boolean completarTarea(UUID identifier) {
-        boolean existe = true;
+        boolean existe = false;
         for(Task tareaYaIntroducida : tareas){
             if(tareaYaIntroducida.getIdentifier().equals(identifier)){
                 tareaYaIntroducida.completarTarea();

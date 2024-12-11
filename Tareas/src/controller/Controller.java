@@ -1,6 +1,5 @@
 package controller;
 
-//CREO QUE COMPLETO
 
 import java.util.List;
 import java.util.UUID;
@@ -44,10 +43,13 @@ public class Controller {
 
     }
 
+    //final del programa
     public void end(){
         view.end();
     }
 
+
+    //El controlador orquesta los métodos entre el modelo y la vista:
    public boolean addTask(Task tarea) throws RepositoryException{
         return model.addTask(tarea);
    }

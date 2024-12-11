@@ -3,9 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.UUID;
 
-//COMPLETO
 
-
+//Interfaz con los métodos que se utilizarán durante la ejecución
 
 public interface IRepository {
 
