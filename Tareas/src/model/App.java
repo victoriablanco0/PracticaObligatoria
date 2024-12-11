@@ -1,13 +1,7 @@
+package model;
 
 
 import controller.Controller;
-import model.BinaryRepository;
-import model.CSVExporter;
-import model.ExporterFactory;
-import model.IExporter;
-import model.IRepository;
-import model.Model;
-import model.NotionRepository;
 import view.BaseView;
 import view.ConsolaListadoView;
 import java.time.format.DateTimeFormatter;

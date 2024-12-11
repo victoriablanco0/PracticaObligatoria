@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +24,8 @@ public class Model {
         this.repository = repository;
         this.exporter = exporter;
         tareas = new ArrayList<>();
+        ficheroEstadoSerializado = Paths.get(System.getProperty("user.home"), "Desktop", "model.bin").toFile();
+
     }
     
 
@@ -81,7 +84,7 @@ public class Model {
 
     public boolean cargarEstadoAplicación() {
 
-        if (ficheroEstadoSerializado.exists() && ficheroEstadoSerializado.isFile()) {
+        if (ficheroEstadoSerializado!=null && ficheroEstadoSerializado.isFile()) {
             ObjectInputStream ois = null;
             try {
                 ois = new ObjectInputStream(new FileInputStream(ficheroEstadoSerializado));
